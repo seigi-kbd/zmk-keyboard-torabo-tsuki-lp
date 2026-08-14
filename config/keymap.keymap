@@ -71,20 +71,11 @@
             key-positions = <41 42>;          /* C + V */
         };
 
-        left_click {
-            bindings = <&mkp MB1>;
-            key-positions = <33 34>;          /* J + K */
-        };
-
-        right_click {
-            bindings = <&mkp MB2>;
-            key-positions = <34 35>;          /* K + L */
-        };
-
-        middle_click {
-            bindings = <&mkp MB3>;
-            key-positions = <34 35 33>;       /* K + L + J */
-        };
+        /*
+         * roBa にあったクリック系コンボ(left_click/right_click/middle_click = J+K / K+L / J+K+L)は
+         * 削除。オートマウスレイヤーが無い状態でホームポジション上に置くと誤爆の温床になるため
+         * (2026-08-13 ユーザー判断)。トラックボール搭載後に必要なら MOUSE レイヤー側で復活させる。
+         */
     };
 
     macros {
