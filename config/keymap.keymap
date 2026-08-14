@@ -42,41 +42,21 @@
 };
 
 / {
-    combos {
-        compatible = "zmk,combos";
-
-        /* roBa のキー位置を L 順に読み替え済み: A=25 S=26 D=27 F=28 / J=33 K=34 L=35 ;=36 / C=41 V=42 */
-        tab {
-            bindings = <&kp TAB>;
-            key-positions = <26 27>;          /* S + D */
-        };
-
-        shift_tab {
-            bindings = <&kp LS(TAB)>;
-            key-positions = <27 28>;          /* D + F */
-        };
-
-        muhennkann {
-            bindings = <&to_layer_0 INT_MUHENKAN>;
-            key-positions = <26 25>;          /* S + A */
-        };
-
-        double_quotation {
-            bindings = <&kp DOUBLE_QUOTES>;
-            key-positions = <35 36>;          /* L + ; */
-        };
-
-        eq {
-            bindings = <&kp EQUAL>;
-            key-positions = <41 42>;          /* C + V */
-        };
-
-        /*
-         * roBa にあったクリック系コンボ(left_click/right_click/middle_click = J+K / K+L / J+K+L)は
-         * 削除。オートマウスレイヤーが無い状態でホームポジション上に置くと誤爆の温床になるため
-         * (2026-08-13 ユーザー判断)。トラックボール搭載後に必要なら MOUSE レイヤー側で復活させる。
-         */
-    };
+    /*
+     * 【コンボは全廃】(2026-08-14 ユーザー判断)
+     *
+     * roBa 側にあったコンボ8種は、git履歴を追った結果すべて fork 元
+     * (kumamuk-git/zmk-config-roBa, masaki氏のコミット 8d624c2 "add config" 2024-08-16)由来で、
+     * ユーザー自身が設定したものは1つも無かった。使っていない機能をホームポジション上に
+     * 置いておくと誤爆の温床にしかならないため全廃する。
+     *
+     *   削除したもの: tab(S+D) / shift_tab(D+F) / muhennkann(S+A) / double_quotation(L+;)
+     *                 / eq(C+V) / left_click(J+K) / right_click(K+L) / middle_click(J+K+L)
+     *
+     * Tab は**ユーザー自身が設定した** Q のタップダンス(&td_q_tab, コミット feddded 2026-05-06
+     * "Add tap-dance: Q single / TAB on double tap")で出せるので、コンボ廃止による実害はない。
+     * 無変換も左親指(&lt_to_layer_0 SYM LANGUAGE_2)のタップに残っている。
+     */
 
     macros {
         to_layer_0: to_layer_0 {
