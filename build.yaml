@@ -24,12 +24,14 @@ include:
     snippet: "studio-rpc-usb-uart split-central input-trackball input-listener input-split-listener"
     artifact-name: torabo_tsuki_lp_double_ball_right_central
   # --- トラックボールのデバッグ用（USBログ有効） ---
-  # studio-rpc-usb-uart を外してあるのは、ZMK Studio の RPC と USB ログが同じ CDC ACM を
-  # 取り合うため。このビルドでは Studio は使えない代わりに、COMポートへログが流れる。
+  # ZMK標準の zmk-usb-logging スニペットを使う。CONFIG_ZMK_USB_LOGGING=y だけを cmake-args で
+  # 渡すと、CDC ACM の devicetree ノードが無いまま USB_CDC_ACM が y-select されて
+  # 「Aborting due to Kconfig warnings」で落ちる（DT_HAS_ZEPHYR_CDC_ACM_UART_ENABLED=n のため）。
+  # スニペット側が overlay でノードを生やし zephyr,console も差し替えてくれる。
+  # studio-rpc-usb-uart は外す（Studio の RPC と取り合うため。このビルドでは Studio は使えない）。
   - board: bmp_boost
     shield: torabo_tsuki_lp_right
-    snippet: "split-central input-trackball input-listener"
-    cmake-args: -DCONFIG_ZMK_USB_LOGGING=y
+    snippet: "zmk-usb-logging split-central input-trackball input-listener"
     artifact-name: torabo_tsuki_lp_right_central_debug
   - board: bmp_boost
     shield: settings_reset
