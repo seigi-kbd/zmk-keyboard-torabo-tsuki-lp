@@ -34,9 +34,12 @@ include:
     snippet: "zmk-usb-logging split-central input-trackball input-listener"
     # ZMK_LOG_LEVEL の既定は 4(DBG)。DBGのままだと split_central のスキャンログが毎秒数十行流れ、
     # 起動直後(t≈1-2秒)に出る PAW3222 の初期化ログをリングバッファから押し流してしまう。
-    # 3(INF)に下げるとスキャンログ(すべて<dbg>)が消え、ドライバの LOG_ERR だけが残る。
-    # ドライバは LOG_MODULE_REGISTER(paw32xx, CONFIG_ZMK_LOG_LEVEL) なので同じ設定で効く。
-    cmake-args: -DCONFIG_ZMK_LOG_LEVEL=3
+    # ⚠ ZMK_LOG_LEVEL は prompt を持たない内部シンボルなので直接指定すると
+    #   「is assigned in a configuration file, but is not directly user-configurable」で落ちる。
+    #   代わりに ZMK_LOGGING_MINIMAL(=Suppress all ZMK debug log messages) を使う。
+    # ドライバは LOG_MODULE_REGISTER(paw32xx, CONFIG_ZMK_LOG_LEVEL) なので同じ設定で効き、
+    # <dbg> が消えても PID 不一致の LOG_ERR は残る。
+    cmake-args: -DCONFIG_ZMK_LOGGING_MINIMAL=y
     artifact-name: torabo_tsuki_lp_right_central_debug
   - board: bmp_boost
     shield: settings_reset
