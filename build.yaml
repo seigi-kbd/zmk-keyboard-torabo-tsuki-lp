@@ -39,7 +39,11 @@ include:
     #   代わりに ZMK_LOGGING_MINIMAL(=Suppress all ZMK debug log messages) を使う。
     # ドライバは LOG_MODULE_REGISTER(paw32xx, CONFIG_ZMK_LOG_LEVEL) なので同じ設定で効き、
     # <dbg> が消えても PID 不一致の LOG_ERR は残る。
-    cmake-args: -DCONFIG_ZMK_LOGGING_MINIMAL=y
+    # ⚠ドライバの初期化ログは t<2秒 に出るが、素のままだとバッファから溢れて観測できない。
+    #   ZMK は USB ログ時に LOG_PROCESS_THREAD_STARTUP_DELAY_MS=1000 でログ処理を1秒遅らせている
+    #   (USB列挙待ち)。これを 8 秒へ伸ばすと、起動直後のログがバッファに留め置かれたまま
+    #   ホスト接続後にまとめて吐き出されるので、PAW3222 の init まで拾える。
+    cmake-args: -DCONFIG_ZMK_LOGGING_MINIMAL=y -DCONFIG_LOG_PROCESS_THREAD_STARTUP_DELAY_MS=8000
     artifact-name: torabo_tsuki_lp_right_central_debug
   - board: bmp_boost
     shield: settings_reset
